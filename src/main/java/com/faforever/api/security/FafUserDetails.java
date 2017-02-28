@@ -3,13 +3,14 @@ package com.faforever.api.security;
 import com.faforever.api.data.domain.BanInfo;
 import com.faforever.api.data.domain.User;
 import lombok.Getter;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
-
-import static java.util.Collections.singletonList;
+import java.util.List;
 
 @Getter
 public class FafUserDetails extends org.springframework.security.core.userdetails.User {
@@ -17,8 +18,7 @@ public class FafUserDetails extends org.springframework.security.core.userdetail
   private final int id;
 
   public FafUserDetails(User user) {
-    // TODO implement lobby_admin
-    this(user.getId(), user.getLogin(), user.getPassword(), isNonLocked(user.getBanInfo()), singletonList(new SimpleGrantedAuthority("ROLE_USER")));
+    this(user.getId(), user.getLogin(), user.getPassword(), isNonLocked(user.getBanInfo()), getRoles(user));
   }
 
   public FafUserDetails(int id, String username, String password, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
@@ -29,5 +29,17 @@ public class FafUserDetails extends org.springframework.security.core.userdetail
   private static boolean isNonLocked(BanInfo banInfo) {
     return banInfo == null
         || banInfo.getExpiresAt().isBefore(OffsetDateTime.now());
+  }
+
+  @NotNull
+  private static List<GrantedAuthority> getRoles(User user) {
+    ArrayList<GrantedAuthority> roles = new ArrayList<>();
+    roles.add(new SimpleGrantedAuthority("ROLE_USER"));
+
+    if (user.getUserGroup() != null && user.getUserGroup().getGroup() == 1) {
+      roles.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+    }
+
+    return roles;
   }
 }
