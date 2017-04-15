@@ -43,6 +43,10 @@ faf-api:
         replaceExisting: true
   clan:
     website-url-format: ${CLAN_WEBSITE_URL_FORMAT:http://clans.test.faforever.com/clan/%s}
+  registration:
+    activation-url-format: ${ACTIVATION_URL_FORMAT:http://localhost:8010/users/activate/%s}
+  password-reset:
+    reset-password-url-format: ${PASSWORD_RESET_URL_FORMAT:http://localhost:8010/users/claimPasswordResetToken/%s}
 
 spring:
   datasource:
