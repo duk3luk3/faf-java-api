@@ -5,6 +5,7 @@ import com.yahoo.elide.annotation.ComputedAttribute;
 import com.yahoo.elide.annotation.Include;
 import lombok.Setter;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -47,6 +48,7 @@ public class MapVersion {
   private String thumbnailUrlLarge;
   private String downloadUrl;
   private List<MapReview> reviews;
+  private LadderMap ladderMap;
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -149,5 +151,10 @@ public class MapVersion {
   @OneToMany(mappedBy = "mapVersion")
   public List<MapReview> getReviews() {
     return reviews;
+  }
+
+  @OneToOne(mappedBy = "mapVersion", cascade = CascadeType.ALL, orphanRemoval = true)
+  public LadderMap getLadderMap() {
+    return ladderMap;
   }
 }
