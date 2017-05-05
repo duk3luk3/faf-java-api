@@ -29,6 +29,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static uk.co.datumedge.hamcrest.json.SameJSONAs.sameJSONAs;
 
 
 @RunWith(SpringRunner.class)
@@ -174,8 +175,8 @@ public class ClanControllerIntegrationTest {
     ResultActions action = MockMvcHelper.of(this.mvc).setSession(session).perform(
         post(String.format("/clans/create?tag=%s&name=%s&description=%s",
             tag, clanName, description)));
-
-    action.andExpect(content().string("{\"errors\":[{\"title\":\"Clan Name already in use\",\"detail\":\"The clan name 'My Cool ClanName' is already in use. Please choose a different clan name.\"}]}"))
+    // TODO: here is the detail message missing -> should fail
+    action.andExpect(content().json("{\"errors\":[{\"title\":\"Clan Name already in use\"}]}"))
         .andExpect(status().is(422));
     assertEquals(2, database.getPlayerRepository().count());
     assertEquals(1, database.getClanRepository().count());
@@ -202,8 +203,8 @@ public class ClanControllerIntegrationTest {
     ResultActions action = MockMvcHelper.of(this.mvc).setSession(session).perform(
         post(String.format("/clans/create?tag=%s&name=%s&description=%s",
             tag, clanName, description)));
-
-    action.andExpect(content().string("{\"errors\":[{\"title\":\"Clan Tag already in use\",\"detail\":\"The clan tag 'My Cool ClanName' is already in use. Please choose a different clan tag.\"}]}"))
+    // TODO: here is the detail message missing -> should fail
+    action.andExpect(content().string(sameJSONAs("{\"errors\":[{\"title\":\"Clan Tag already in use\"}]}")))
         .andExpect(status().is(422));
     assertEquals(2, database.getPlayerRepository().count());
     assertEquals(1, database.getClanRepository().count());
