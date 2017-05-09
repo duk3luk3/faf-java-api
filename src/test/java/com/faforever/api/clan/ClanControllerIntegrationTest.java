@@ -160,7 +160,7 @@ public class ClanControllerIntegrationTest {
 
   @Test
   public void createClanWithSameName() throws Exception {
-    Player otherLeader = PlayerFactory.createPlayer("Downloard", database);
+    Player otherLeader = PlayerFactory.builder().database(database).build();
     Session session = SessionFactory.createUserAndGetAccessToken(
       database, mvc);
     String clanName = "My Cool ClanName";
@@ -193,7 +193,7 @@ public class ClanControllerIntegrationTest {
 
   @Test
   public void createClanWithSameTag() throws Exception {
-    Player otherLeader = PlayerFactory.createPlayer("Downloard", database);
+    Player otherLeader = PlayerFactory.builder().database(database).build();
     Session session = SessionFactory.createUserAndGetAccessToken(
       database, mvc);
     String clanName = "My Cool ClanName";

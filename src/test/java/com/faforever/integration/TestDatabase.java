@@ -1,5 +1,7 @@
 package com.faforever.integration;
 
+import com.faforever.api.avatar.AvatarAssignmentRepository;
+import com.faforever.api.avatar.AvatarRepository;
 import com.faforever.api.clan.ClanMembershipRepository;
 import com.faforever.api.clan.ClanRepository;
 import com.faforever.api.client.OAuthClientRepository;
@@ -20,22 +22,29 @@ public class TestDatabase {
   private ClanMembershipRepository clanMembershipRepository;
   private PlayerRepository playerRepository;
   private OAuthClientRepository oAuthClientRepository;
-
+  private AvatarRepository avatarRepository;
+  private AvatarAssignmentRepository avatarAssignmentRepository;
 
   @Inject
   public void init(ClanRepository clanRepository,
                    UserRepository userRepository,
                    PlayerRepository playerRepository,
                    OAuthClientRepository oAuthClientRepository,
-                   ClanMembershipRepository clanMembershipRepository) {
+                   ClanMembershipRepository clanMembershipRepository,
+                   AvatarRepository avatarRepository,
+                   AvatarAssignmentRepository avatarAssignmentRepository) {
     this.clanRepository = clanRepository;
     this.userRepository = userRepository;
     this.playerRepository = playerRepository;
     this.oAuthClientRepository = oAuthClientRepository;
     this.clanMembershipRepository = clanMembershipRepository;
+    this.avatarRepository = avatarRepository;
+    this.avatarAssignmentRepository = avatarAssignmentRepository;
   }
 
   public void assertEmptyDatabase() {
+    assertEquals(0, avatarAssignmentRepository.count());
+    assertEquals(0, avatarRepository.count());
     assertEquals(0, clanRepository.count());
     assertEquals(0, userRepository.count());
     assertEquals(0, playerRepository.count());
@@ -44,6 +53,8 @@ public class TestDatabase {
   }
 
   public void tearDown() {
+    avatarAssignmentRepository.deleteAll();
+    avatarRepository.deleteAll();
     clanMembershipRepository.deleteAll();
     clanRepository.deleteAll();
     userRepository.deleteAll();

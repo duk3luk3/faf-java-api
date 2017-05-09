@@ -31,7 +31,7 @@ public class SessionFactory {
   @SneakyThrows
   public static Session createUserAndGetAccessToken(TestDatabase database,
                                                     MockMvc mvc) {
-    return createUserAndGetAccessToken("JUnitOnDragonFire", "myCoolPassword",
+    return createUserAndGetAccessToken("JUnitTestUser_SessionFactory", "myCoolPassword",
         database, mvc);
   }
 
