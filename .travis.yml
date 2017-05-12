@@ -19,7 +19,9 @@ install:
   - docker-compose -f faf-stack/docker-compose.yml up -d faf-db
 
 script:
+  - echo -e 'travis_fold:start:gradle' && echo  'Gradle Build & Test'
   - chmod +x gradlew && ./gradlew build --info
+  - echo -e 'travis_fold:end:gradle'
 
 after_success:
   - ./gradlew jacocoTestReport coveralls

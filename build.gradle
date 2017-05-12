@@ -1,3 +1,5 @@
+apply from: 'https://raw.githubusercontent.com/mendhak/Gradle-Travis-Colored-Output/master/ColoredOutput.gradle'
+
 buildscript {
   repositories {
     jcenter()
