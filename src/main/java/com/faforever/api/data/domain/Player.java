@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -24,6 +25,7 @@ public class Player extends Login {
   private Ladder1v1Rating ladder1v1Rating;
   private GlobalRating globalRating;
   private List<ClanMembership> clanMemberships;
+  private List<HardwareInformation> hardwareInformations;
 
   @OneToOne(mappedBy = "player", fetch = FetchType.LAZY)
   public Ladder1v1Rating getLadder1v1Rating() {
@@ -48,6 +50,11 @@ public class Player extends Login {
       return getClanMemberships().get(0).getClan();
     }
     return null;
+  }
+
+  @ManyToMany(mappedBy = "players")
+  public List<HardwareInformation> getHardwareInformations() {
+    return this.hardwareInformations;
   }
 
   @Override

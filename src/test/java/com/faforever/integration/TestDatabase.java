@@ -3,6 +3,7 @@ package com.faforever.integration;
 import com.faforever.api.clan.ClanMembershipRepository;
 import com.faforever.api.clan.ClanRepository;
 import com.faforever.api.client.OAuthClientRepository;
+import com.faforever.api.hardwareinformation.HardwareInformationRepository;
 import com.faforever.api.player.PlayerRepository;
 import com.faforever.api.user.UserRepository;
 import lombok.Getter;
@@ -20,6 +21,7 @@ public class TestDatabase {
   private ClanMembershipRepository clanMembershipRepository;
   private PlayerRepository playerRepository;
   private OAuthClientRepository oAuthClientRepository;
+  private HardwareInformationRepository hardwareInformationRepository;
 
 
   @Inject
@@ -27,15 +29,18 @@ public class TestDatabase {
                    UserRepository userRepository,
                    PlayerRepository playerRepository,
                    OAuthClientRepository oAuthClientRepository,
-                   ClanMembershipRepository clanMembershipRepository) {
+                   ClanMembershipRepository clanMembershipRepository,
+                   HardwareInformationRepository hardwareInformationRepository) {
     this.clanRepository = clanRepository;
     this.userRepository = userRepository;
     this.playerRepository = playerRepository;
     this.oAuthClientRepository = oAuthClientRepository;
     this.clanMembershipRepository = clanMembershipRepository;
+    this.hardwareInformationRepository = hardwareInformationRepository;
   }
 
   public void assertEmptyDatabase() {
+    assertEquals(0, hardwareInformationRepository.count());
     assertEquals(0, clanRepository.count());
     assertEquals(0, userRepository.count());
     assertEquals(0, playerRepository.count());
@@ -44,6 +49,7 @@ public class TestDatabase {
   }
 
   public void tearDown() {
+    hardwareInformationRepository.deleteAll();
     clanMembershipRepository.deleteAll();
     clanRepository.deleteAll();
     userRepository.deleteAll();
